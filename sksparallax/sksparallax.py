@@ -15,7 +15,7 @@ class OverlayApp(OverlayBaseWidget):
     """Inherits from OverlayBaseWidget, and adds methods to
     detect aruco tags and move the model to follow."""
 
-    def __init__(self, image_source):
+    def __init__(self, image_source, init_widget):
         """override the default constructor to set up sksurgeryarucotracker"""
 
         #we'll use SciKit-SurgeryArUcoTracker to estimate the pose of the
@@ -44,7 +44,7 @@ class OverlayApp(OverlayBaseWidget):
 
         #and call the constructor for the base class
         if sys.version_info > (3, 0):
-            super().__init__(image_source)
+            super().__init__(image_source, init_vtk_widget = init_widget)
         else:
             #super doesn't work the same in py2.7
             OverlayBaseWidget.__init__(self, image_source)
@@ -90,18 +90,33 @@ class OverlayApp(OverlayBaseWidget):
         camera2tag = transform_manager.get("camera2tag")
 
         #Let's move the camera, rather than the model this time.
-        self.vtk_overlay_window.set_camera_pose(camera2tag)
+        camera=self.vtk_overlay_window.get_foreground_camera()
+        current_pos=camera.GetPosition()
+        print ('position=',current_pos)
+        print ('focal_point=',camera.GetFocalPoint())
+        x_pos=tag2camera[0][3]
+        y_pos=tag2camera[1][3]
+        print ('x=',x_pos)
+        print ('y=',y_pos)
+        camera.SetPosition(-x_pos, -y_pos, current_pos[2])
+        camera.SetFocalPoint(0., 0., 100)
+        #camera.SetAzimuth(x_pos/10)
+
+        #self.vtk_overlay_window.set_camera_pose(camera2tag)
 
 if __name__ == '__main__':
     app = QApplication([])
 
     video_source = 0
-    viewer = OverlayApp(video_source)
+    viewer = OverlayApp(video_source, init_widget = False)
 
-    model_dir = '../models'
+    model_dir = './models'
     viewer.add_vtk_models_from_dir(model_dir)
 
     viewer.show()
+    viewer.vtk_overlay_window.Initialize()
+    viewer.vtk_overlay_window.Start()
     viewer.start()
 
     sys.exit(app.exec_())
+    viewer.vtk_overlay_window.close()
