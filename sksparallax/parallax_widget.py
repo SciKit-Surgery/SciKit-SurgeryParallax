@@ -10,22 +10,27 @@ from PySide2.QtWidgets import QApplication
 from sksurgeryutils.common_overlay_apps import OverlayBaseWidget
 from sksurgerycore.transforms.transform_manager import TransformManager
 from sksurgeryarucotracker.arucotracker import ArUcoTracker
+from sksurgeryvtk.models.vtk_cylinder_model import VTKCylinderModel
+from sksurgeryvtk.utils.matrix_utils import create_vtk_matrix_from_numpy
 
-class OverlayApp(OverlayBaseWidget):
+class ParallaxWidget(OverlayBaseWidget):
     """Inherits from OverlayBaseWidget, and adds methods to
     detect aruco tags and move the model to follow."""
 
-    def __init__(self, image_source, init_widget):
+    def __init__(self, image_source, init_widget, aruco_source):
         """override the default constructor to set up sksurgeryarucotracker"""
 
         #we'll use SciKit-SurgeryArUcoTracker to estimate the pose of the
         #visible ArUco tag relative to the camera. We use a dictionary to
         #configure SciKit-SurgeryArUcoTracker
+        
+        if image_source == aruco_source:
+            aruco_source = 'none'
 
         ar_config = {
             "tracker type": "aruco",
             #Set to none, to share video source with OverlayBaseWidget
-            "video source": 'none',
+            "video source": aruco_source,
             "debug": False,
             #the aruco tag dictionary to use. DICT_4X4_50 will work with
             #../tags/aruco_4by4_0.pdf
@@ -58,7 +63,7 @@ class OverlayApp(OverlayBaseWidget):
         #Without the next line the model does not show as the clipping range
         #does not change to accommodate model motion. Uncomment it to
         #see what happens.
-        self.vtk_overlay_window.set_camera_state({"ClippingRange": [10, 800]})
+        self.vtk_overlay_window.set_camera_state({"ClippingRange": [10, 1800]})
         self.vtk_overlay_window.set_video_image(image)
         self.vtk_overlay_window.Render()
 
@@ -98,25 +103,8 @@ class OverlayApp(OverlayBaseWidget):
         y_pos=tag2camera[1][3]
         print ('x=',x_pos)
         print ('y=',y_pos)
-        camera.SetPosition(-x_pos, -y_pos, current_pos[2])
         camera.SetFocalPoint(0., 0., 100)
+        camera.SetPosition(x_pos/2., -y_pos/2., current_pos[2])
         #camera.SetAzimuth(x_pos/10)
 
         #self.vtk_overlay_window.set_camera_pose(camera2tag)
-
-if __name__ == '__main__':
-    app = QApplication([])
-
-    video_source = 0
-    viewer = OverlayApp(video_source, init_widget = False)
-
-    model_dir = './models'
-    viewer.add_vtk_models_from_dir(model_dir)
-
-    viewer.show()
-    viewer.vtk_overlay_window.Initialize()
-    viewer.vtk_overlay_window.Start()
-    viewer.start()
-
-    sys.exit(app.exec_())
-    viewer.vtk_overlay_window.close()
