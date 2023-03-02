@@ -17,7 +17,8 @@ class ParallaxWidget(OverlayBaseWidget):
     """Inherits from OverlayBaseWidget, and adds methods to
     detect aruco tags and move the model to follow."""
 
-    def __init__(self, image_source, init_widget, aruco_source):
+    def __init__(self, image_source, init_widget, aruco_source, focal_point, 
+            scaling):
         """override the default constructor to set up sksurgeryarucotracker"""
 
         #we'll use SciKit-SurgeryArUcoTracker to estimate the pose of the
@@ -26,6 +27,9 @@ class ParallaxWidget(OverlayBaseWidget):
         
         if image_source == aruco_source:
             aruco_source = 'none'
+
+        self.focal_point = focal_point
+        self.scaling = scaling
 
         ar_config = {
             "tracker type": "aruco",
@@ -103,8 +107,8 @@ class ParallaxWidget(OverlayBaseWidget):
         y_pos=tag2camera[1][3]
         print ('x=',x_pos)
         print ('y=',y_pos)
-        camera.SetFocalPoint(0., 0., 100)
-        camera.SetPosition(x_pos/2., -y_pos/2., current_pos[2])
+        camera.SetFocalPoint(0., 0., self.focal_point)
+        camera.SetPosition(x_pos*self.scaling, -y_pos*self.scaling, current_pos[2])
         #camera.SetAzimuth(x_pos/10)
 
         #self.vtk_overlay_window.set_camera_pose(camera2tag)

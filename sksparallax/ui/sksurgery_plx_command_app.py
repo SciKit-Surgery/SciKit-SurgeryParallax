@@ -22,7 +22,8 @@ def run(calib_dir, model_dir, focal_distance, camera_pos,
     app = QApplication([])
 
     viewer = ParallaxWidget(video_source, init_widget = False, 
-            aruco_source = aruco_source)
+            aruco_source = aruco_source, focal_point = focal_distance, 
+            scaling = scale_motion)
 
     viewer.add_vtk_models_from_dir(model_dir)
 
