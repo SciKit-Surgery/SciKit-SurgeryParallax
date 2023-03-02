@@ -41,10 +41,7 @@ def main(args=None):
                         default=0.5,
                         help="Scale the camera motion by this amount")
 
-    parser.add_argument("-x", "--show_crosshairs",
-                        required=False,
-                        type=bool,
-                        default=True,
+    parser.add_argument("-x", "--show_crosshairs", action='store_true',
                         help="Show cross hairs representing the focal point")
 
     parser.add_argument("-i", "--video_source",
