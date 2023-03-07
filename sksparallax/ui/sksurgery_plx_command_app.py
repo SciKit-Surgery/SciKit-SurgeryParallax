@@ -24,6 +24,12 @@ def run(calib_dir, model_dir, focal_distance, camera_pos,
             scaling = scale_motion)
 
     viewer.add_vtk_models_from_dir(model_dir)
+    actors = viewer.vtk_overlay_window.foreground_renderer.GetActors()
+    for index, actor in enumerate(actors):
+        if index == 0:
+            actor.SetPosition(50,0,0)
+        if index == 1:
+            actor.SetPosition(-50,0,0)
 
     if show_cross_hairs:
         add_crosshairs(viewer, focal_distance)
