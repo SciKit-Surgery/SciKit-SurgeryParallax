@@ -28,7 +28,7 @@ def add_crosshairs ( viewer, z_origin):
     viewer.vtk_overlay_window.add_vtk_models([z_axis])
 
 
-def add_cube_grid ( viewer, spacing = 80, line_width = 1, cube_width = 160, 
+def add_cube_grid ( viewer, spacing = 40, line_width = 0.2, cube_width = 160, 
         cube_height = 160, cube_depth = 160):
     """
     creates a 3D grid model and adds it to the viewer
@@ -39,7 +39,7 @@ def add_cube_grid ( viewer, spacing = 80, line_width = 1, cube_width = 160,
         for y_pos in numpy.arange (- cube_height/2., cube_height/2. + 1, spacing):
             
             x_line = VTKCylinderModel(height = cube_width, radius = line_width,
-                colour = (0., 1., 0.), name = "x_axis",
+                colour = (0.412, 0.412, 0.412), name = "x_axis",
                 angle = 90.0, orientation = (0., 0., 1.))
     
             to_fp = numpy.eye(4)
@@ -53,7 +53,7 @@ def add_cube_grid ( viewer, spacing = 80, line_width = 1, cube_width = 160,
         for x_pos in numpy.arange (- cube_width/2., cube_width/2. + 1, spacing):
             
             y_line = VTKCylinderModel(height = cube_height, radius = line_width,
-                colour = (1., 0., 0.), name = "y_axis",
+                colour = (0.412, 0.412, 0.412), name = "y_axis",
                 angle = 0.0, orientation = (1., 0., 0.))
             
             to_fp = numpy.eye(4)
@@ -67,7 +67,7 @@ def add_cube_grid ( viewer, spacing = 80, line_width = 1, cube_width = 160,
         for y_pos in numpy.arange (- cube_height/2., cube_height/2. + 1, spacing):
             
             x_line = VTKCylinderModel(height = cube_width, radius = line_width,
-                colour = (0., 1., 0.), name = "x_axis",
+                colour = (0.412, 0.412, 0.412), name = "z_axis",
                 angle = 90.0, orientation = (0., 0., 1.))
     
             z_line = VTKCylinderModel(height = cube_depth, radius = line_width,
