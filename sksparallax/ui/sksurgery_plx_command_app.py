@@ -28,8 +28,12 @@ def run(calib_dir, model_dir, focal_distance, camera_pos,
     for index, actor in enumerate(actors):
         if index == 0:
             actor.SetPosition(50,20,0)
+            scale = 1.25
+            actor.SetScale(scale,scale,scale)
         if index == 1:
             actor.SetPosition(-50,20,-80)
+            scale = 1.0
+            actor.SetScale(scale,scale,scale)
 
     if show_cross_hairs:
         add_crosshairs(viewer, focal_distance)
