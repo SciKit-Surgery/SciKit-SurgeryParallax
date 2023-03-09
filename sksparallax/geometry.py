@@ -28,15 +28,15 @@ def add_crosshairs ( viewer, z_origin):
     viewer.vtk_overlay_window.add_vtk_models([z_axis])
 
 
-def add_cube_grid ( viewer, spacing = 20, line_width = 1, cube_width = 160, 
+def add_cube_grid ( viewer, spacing = 80, line_width = 1, cube_width = 160, 
         cube_height = 160, cube_depth = 160):
     """
     creates a 3D grid model and adds it to the viewer
     """
 
     #the x lines
-    for z_pos in numpy.arange (- cube_depth/2., cube_depth/2., spacing):
-        for y_pos in numpy.arange (- cube_height/2., cube_height/2., spacing):
+    for z_pos in numpy.arange (- cube_depth/2., cube_depth/2. + 1, spacing):
+        for y_pos in numpy.arange (- cube_height/2., cube_height/2. + 1, spacing):
             
             x_line = VTKCylinderModel(height = cube_width, radius = line_width,
                 colour = (0., 1., 0.), name = "x_axis",
@@ -49,8 +49,8 @@ def add_cube_grid ( viewer, spacing = 20, line_width = 1, cube_width = 160,
             viewer.vtk_overlay_window.add_vtk_models([x_line])
     
     #the y_lines
-    for z_pos in numpy.arange (- cube_depth/2., cube_depth/2., spacing):
-        for x_pos in numpy.arange (- cube_width/2., cube_width/2., spacing):
+    for z_pos in numpy.arange (- cube_depth/2., cube_depth/2. + 1 , spacing):
+        for x_pos in numpy.arange (- cube_width/2., cube_width/2. + 1, spacing):
             
             y_line = VTKCylinderModel(height = cube_height, radius = line_width,
                 colour = (1., 0., 0.), name = "y_axis",
@@ -63,8 +63,8 @@ def add_cube_grid ( viewer, spacing = 20, line_width = 1, cube_width = 160,
             viewer.vtk_overlay_window.add_vtk_models([y_line])
     
     #the z_lines
-    for x_pos in numpy.arange (- cube_width/2., cube_width/2., spacing):
-        for y_pos in numpy.arange (- cube_height/2., cube_height/2., spacing):
+    for x_pos in numpy.arange (- cube_width/2., cube_width/2. + 1, spacing):
+        for y_pos in numpy.arange (- cube_height/2., cube_height/2. + 1, spacing):
             
             x_line = VTKCylinderModel(height = cube_width, radius = line_width,
                 colour = (0., 1., 0.), name = "x_axis",
