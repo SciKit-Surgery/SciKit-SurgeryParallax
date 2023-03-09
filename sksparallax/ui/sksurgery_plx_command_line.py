@@ -44,6 +44,9 @@ def main(args=None):
     parser.add_argument("-x", "--show_crosshairs", action='store_true',
                         help="Show cross hairs representing the focal point")
 
+    parser.add_argument("-g", "--show_grid", action='store_true',
+                        help="Show a grid")
+
     parser.add_argument("-i", "--video_source",
                         required=False,
                         type=int,
@@ -66,5 +69,5 @@ def main(args=None):
     args = parser.parse_args(args)
 
     run(args.calib_dir, args.model_dir, args.focal_point, args.camera_position,
-            args.scale_motion, args.show_crosshairs, args.video_source,
-            args.aruco_source)
+            args.scale_motion, args.show_crosshairs, args.show_grid, 
+            args.video_source, args.aruco_source)
