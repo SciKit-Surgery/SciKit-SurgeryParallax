@@ -9,10 +9,11 @@ from sksurgerycore.transforms.transform_manager import TransformManager
 from sksurgeryarucotracker.arucotracker import ArUcoTracker
 
 from sksparallax.parallax_widget import ParallaxWidget
-from sksparallax.geometry import add_crosshairs
+from sksparallax.geometry import add_crosshairs, add_cube_grid
 
 def run(calib_dir, model_dir, focal_distance, camera_pos, 
-        scale_motion, show_cross_hairs, video_source, aruco_source):
+        scale_motion, show_cross_hairs, show_cube, video_source, 
+        aruco_source):
 
     """ Prints command line args, and launches main screen."""
 
@@ -26,6 +27,9 @@ def run(calib_dir, model_dir, focal_distance, camera_pos,
 
     if show_cross_hairs:
         add_crosshairs(viewer, focal_distance)
+   
+    if show_cube:
+        add_cube_grid(viewer)
 
     viewer.show()
     viewer.vtk_overlay_window.Initialize()
