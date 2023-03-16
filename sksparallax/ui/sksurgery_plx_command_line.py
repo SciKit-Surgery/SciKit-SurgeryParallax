@@ -12,17 +12,17 @@ def main(args=None):
     parser = argparse.ArgumentParser(description='sksurgeryplx')
 
 
-    parser.add_argument("-d", "--calib_dir",
+    parser.add_argument("-k", "--calib_dir",
                         required=False,
                         type=str,
                         help="Directory containing calibration data.")
-    
+   
     parser.add_argument("-m", "--model_dir",
                         required=False,
                         type=str,
                         default="./models",
                         help="Directory containing model data.")
-    
+   
     parser.add_argument("-f", "--focal_point",
                         required=False,
                         type=float,
@@ -34,7 +34,7 @@ def main(args=None):
                         type=float,
                         default=-500,
                         help="The z location of the camera position")
-    
+   
     parser.add_argument("-s", "--scale_motion",
                         required=False,
                         type=float,
@@ -50,14 +50,21 @@ def main(args=None):
     parser.add_argument("-i", "--video_source",
                         required=False,
                         type=int,
-                        default=2,
+                        default=0,
                         help="Source for the video image")
 
     parser.add_argument("-a", "--aruco_source",
                         required=False,
                         type=int,
-                        default=0,
+                        default=1,
                         help="Source for the aruco tracker")
+
+    parser.add_argument("-d", "--depth",
+                        required=False,
+                        type=int,
+                        default=0,
+                        help="Source for the video image")
+
 
     version_string = 'aplha'
     friendly_version_string = version_string if version_string else 'unknown'
@@ -69,5 +76,6 @@ def main(args=None):
     args = parser.parse_args(args)
 
     run(args.calib_dir, args.model_dir, args.focal_point, args.camera_position,
-            args.scale_motion, args.show_crosshairs, args.show_grid, 
-            args.video_source, args.aruco_source)
+            args.scale_motion, args.show_crosshairs, args.show_grid,
+            args.video_source, args.aruco_source, args.depth)
+
